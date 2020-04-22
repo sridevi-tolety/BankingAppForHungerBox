@@ -1,6 +1,7 @@
 package com.myorg.banking.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,8 @@ public class BankAccountController {
 	}
 	
 	@PostMapping("/registerUser")
-	public BankAccount registerUser(@RequestBody BankAccount user){		
+	public BankAccount registerUser(@RequestBody BankAccount user){
+		System.out.println(Math.random());
 		BankAccount savedAcct = brep.save(user);
 		return savedAcct;		
 	}
@@ -56,5 +58,12 @@ public class BankAccountController {
 	public List<BankTransaction> getTransactions(){
 		return trep.findAll();
 	}
+	
+	@GetMapping("/checkCardNumber/{cardnumber}")
+	public boolean checkCardNumber(@PathVariable Long cardnumber){
+		Optional<BankAccount> ba =brep.findByCardNumber(cardnumber);
+		return ba.isPresent()?true : false;
+	}
+	
 
 }
